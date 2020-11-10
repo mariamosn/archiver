@@ -1,0 +1,53 @@
+Maria Moșneag 313CA
+
+	Cerința 0
+
+	Pentru fiecare linie citită în parte am verificat dacă aceasta reprezintă o comandă validă sau nu
+și procedez conform cerinței.
+
+	Cerința 1 - Create
+
+	Pentru crearea arhivei folosesc funcția create care primește ca parametrii numele arhivei și calea
+spre directorul de arhivat. În cadrul funcției, iau pe rând fiecare linie din files.txt, obținând
+astfel informații despre fișierele care se vor afla în arhivă. Apoi, cu ajutorul unor funcții
+auxiliare completez câmpurile din header.
+	Funcția name obține din files.txt numele fișierului care urmează să fie adăugat în arhivă și
+adaugă informația în câmpul name din header.
+	Funcția permission calculează pe baza informațiilor din files.txt ce permisiuni (read, write,
+execute) are fiecare categorie de utilizatori (owner, grupul din care face parte owner-ul și
+ceilalți utilizatori) și introduce informația în câmpul mode din header.
+	Funcția user caută în files.txt numele owner-ului fișierului și îl memorează în câmpul uname din
+header. Apoi caută în usermap.txt uid-ul utilizatorului care deține fișierul și îl salvează în câmpul
+uid din header, în octal.
+	Funcția group procedează analog funcției name. Caută în files.txt numele grupului din care face
+parte owner-ul și îl salvează în câmpul gname, apoi caută în usermap.txt gid-ul grupului și îl salvează
+în câmpul gid.
+	Funcția size caută dimensiunea fișierului în files.txt, o transformă în octal și apoi o introduce
+în câmpul size.
+	Funcția timestamp calculează pe baza timestamp-ului din files.txt numărul de secunde trecute de la
+01.01.1970 00:00:00, ținând cont și de fusul orar. Apoi transformă valoarea în octal și o introduce în
+câmpul mtime.
+	Funcția dev completează cu '0' câmpurile devminor și devmajor.
+	Funcția chksum completează cu ' ' câmpul chksum din header și apoi parcurge cu ajutorul unui pointer
+de tip char toți bytes-ii din header, făcând suma dintre aceștia. Suma este apoi transformată în octal și
+introdusă în câmpul chksum.
+	Informațiile din header sunt scrise apoi în fișierul arhivei (deschis pentru scriere, binar). Apoi
+din fișierul de arhivat se citesc rând pe rând blocuri de câte 512 bytes și se copiază în fișierul arhivei.
+	Procedeul se repetă pentru fiecare fișier din directorul care trebuie arhivat. La final se adaugă un
+bloc de 512 bytes care conține '\0'.
+
+	Cerința 2 - List
+
+	Pentru listarea fișierelor din arhivă folosesc funcția list care primește ca parametru numele arhivei.
+	Se citește header-ul, se afișează numele, apoi pe baza câmpului size se calculează cu câte poziții
+trebuie mutat cursorul față de poziția curentă astfel încât să ajungem la header-ul următorului fișier.
+Procedeul se repetă până la finalul fișierului ce conține arhiva.
+
+	Cerința 3 - Extract
+
+	Pentru extragerea unui fișier din arhivă folosesc funcția extract care primește ca parametrii numele
+fișierului care trebuie extras și numele arhivei.
+	Din arhivă citim un header și verificăm numele fișierului căruia îi aparține. Dacă acesta este
+numele fișierului care trebuie să fie extras, se copiază cu ajutorul unui bloc auxiliar de 512 bytes
+conținutul fișierului (aflat în continuarea header-ului) într-un alt fișier cu prefixul "extracted_",
+iar dacă nu, se mută cursorul până la header-ul următorului fișier din arhivă.
